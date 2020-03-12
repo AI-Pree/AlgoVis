@@ -1,17 +1,33 @@
-import numpy as np
+from skimage import color
+from imageio import imsave
 import cv2 
+import numpy as np
+from matplotlib import cm
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+ 
 
-#creating a grid the pixels
-grid = np.zeros((300,300,3), dtype = "float32") #using hsv to match the human preceived color
-print(grid.shape)
+'''
+    Viridis color map to test the sorting algorithm
+'''
 
-for col in range(grid.shape[1]):
-    grid[:,col,:] = (col/grid.shape[1],1.0,1.0)
+img = np.zeros((50, 50, 3), dtype='float16')
+viridis = cm.get_cmap("viridis", 50)
+viridis_array = viridis.colors
 
-#converting rgb to the hsv
-green = np.full_like((10,10,3),2)
-print(green)
-print(green.shape)
-#hsv_green = cv2.cvtColor(green,cv2.COLOR_BGR2HSV)
-cv2.im
-#output the image file for the given grid in RGB
+
+'''
+    Converting the rgba to rgb
+'''
+for row in range(img.shape[0]):
+    for col in range(img.shape[1]):
+        img[row,col] = viridis_array[col,:-1]
+
+imsave("viridis_rgb.png", img)
+
+'''
+    shuffling the color
+'''
+for col in range(img.shape[1]):
+    np.random.shuffle(img[col,:,:])
+
+imsave("viridis_shuffled.png", img)
