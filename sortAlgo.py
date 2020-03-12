@@ -16,7 +16,7 @@ def selectionSort(arr):
         if less != i:
             swaps.append([i,less])
             arr[i], arr[less] = arr[less], arr[i]
-    return arr, swaps
+    return swaps
 '''
     insertion sort
 '''
@@ -29,7 +29,7 @@ def insertionSort(arr):
                 swaps.append([j,j-1])
                 arr[j], arr[j-1] = arr[j-1], arr[j]
             j -= 1
-    return arr, swaps
+    return swaps
 
 '''
     shell short
@@ -96,7 +96,7 @@ changes = []
 
 for i in range(test.shape[0]):
     new_change = []
-    _, new_change = insertionSort(list(test[i,:,0]))
+    new_change = insertionSort(list(test[i,:,0]))
     if len(new_change) > swap_nums:
         swap_nums = len(new_change)
     changes.append(new_change)
