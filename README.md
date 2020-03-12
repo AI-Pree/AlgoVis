@@ -16,7 +16,8 @@ def selectionSort(arr):
         for j in range(i,len(arr)-1):
             if compare(arr[j+1], arr[less]):
                 less = j + 1
-        exch(arr,i, less)
+        if less != i:
+            exch(arr,i, less)
 ```
 
 ## Insertion Sort
