@@ -4,7 +4,7 @@ import numpy as np
 from skimage import color
 
 '''
-    Selectionsort
+    Selection sort
 '''
 def selectionSort(arr):
     swaps = []
@@ -16,14 +16,48 @@ def selectionSort(arr):
         if less != i:
             swaps.append([i,less])
             arr[i], arr[less] = arr[less], arr[i]
-    return swaps
+    return arr, swaps
+'''
+    insertion sort
+'''
+def insertionSort(arr):
+    swaps = []
+    for i in range(len(arr)):
+        j = i
+        while (j > 0):
+            if arr[j] > arr[j-1]:
+                swaps.append([j,j-1])
+                arr[j], arr[j-1] = arr[j-1], arr[j]
+            j -= 1
+    return arr, swaps
 
+'''
+    shell short
+'''
+def shellSort(arr):
+    N = len(arr)
+    swaps = []
+    #setting h interval
+    h = 1
+    while(h < N/3): 
+        h = h * 3 + 1 #increment sequence by 3x + 1 
+        print(h)
+
+    while (h > 0):
+        for i in range(h, N):
+            j = i
+            while (j >= h and arr[j]< arr[j-h]):
+                swaps.append([j,j-h])
+                arr[j], arr[j-h] = arr[j-h], arr[j]
+                j -= h
+        h //= 3 #move to next increment
+    return arr, swaps
 
 '''
     Viridis color map to test the sorting algorithm
 '''
-img = np.zeros((3, 3, 3), dtype='float16')
-viridis = cm.get_cmap("viridis", 5)
+img = np.zeros((200, 200, 3), dtype='float16')
+viridis = cm.get_cmap("viridis", 200)
 viridis_array = viridis.colors
 
 '''
@@ -36,12 +70,6 @@ for row in range(img.shape[0]):
 imsave("viridis_rgb.png", img) #output for the image file
 
 rgb_hsv = color.convert_colorspace(img, "rgb", "hsv")
-print(rgb_hsv)
-
-
-print()
-print()
-print()
 
 '''
     shuffling the color
@@ -57,18 +85,46 @@ imsave("viridis_shuffled.png",shuffle ) #output for the shuffled image file
 test = color.convert_colorspace(shuffle, "rgb", "hsv")
 print(test)
 
+
+
 '''
     sorting values
 '''
+
 swap_nums = 0
 changes = []
 
-for i in range(img.shape[0]):
+for i in range(test.shape[0]):
     new_change = []
-    new_change = selectionSort(list(test[i,:,0]))
+    _, new_change = insertionSort(list(test[i,:,0]))
     if len(new_change) > swap_nums:
         swap_nums = len(new_change)
     changes.append(new_change)
-print(changes)
 
-print(test) 
+
+'''
+    visulization for the algorithm
+'''
+
+curr_swaps = 0
+
+def  swap_pixels(row, value):
+    tmp = test[row,value[0],:].copy()
+    test[row,value[0],:] = test[row,value[1],:]
+    test[row,value[1],:] = tmp
+
+print(swap_nums)
+img_trans = swap_nums // 100
+img_frame = 0
+
+while curr_swaps < swap_nums:
+    for i in range(test.shape[0]):
+        if curr_swaps < len(changes[i]) - 1:
+            swap_pixels(i, changes[i][curr_swaps])
+    
+    if  curr_swaps % img_trans == 0:
+        print(img_frame)
+        imsave('%s/%05d.png'%("sort",img_frame), color.convert_colorspace(test, "hsv", "rgb"))
+        img_frame += 1
+    
+    curr_swaps += 1
