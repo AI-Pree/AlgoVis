@@ -54,6 +54,19 @@ def shellSort(arr):
     return arr, swaps
 
 '''
+    bubble short
+'''
+def bubblesort(arr):
+    swaps = []
+    N = len(arr)
+    for i in range(N):
+        for x in range(0,N-i-1):
+            if arr[x] < arr[x+1]:
+                swaps.append([x,x+1])
+                arr[x], arr[x+1] = arr[x+1], arr[x]
+    return swaps
+
+'''
     Viridis color map to test the sorting algorithm
 '''
 img = np.zeros((200, 200, 3), dtype='float16')
@@ -96,7 +109,7 @@ changes = []
 
 for i in range(test.shape[0]):
     new_change = []
-    new_change = insertionSort(list(test[i,:,0]))
+    new_change = bubblesort(list(test[i,:,0]))
     if len(new_change) > swap_nums:
         swap_nums = len(new_change)
     changes.append(new_change)
