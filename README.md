@@ -21,7 +21,7 @@ def bubblesort(arr):
         for x in range(0,N-i-1):
             if arr[x] < arr[x+1]:
                 arr[x], arr[x+1] = arr[x+1], arr[x]
-'''
+```
 
 ## Insertion Sort
 ![](gif/insertion.gif)
