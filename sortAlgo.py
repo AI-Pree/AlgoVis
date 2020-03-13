@@ -23,11 +23,11 @@ def selectionSort(arr):
 def insertionSort(arr):
     swaps = []
     for i in range(len(arr)):
+        key = arr[i]
         j = i
-        while (j > 0):
-            if arr[j] > arr[j-1]:
-                swaps.append([j,j-1])
-                arr[j], arr[j-1] = arr[j-1], arr[j]
+        while (j > 0 and key > arr[j-1]):
+            swaps.append([j,j-1])
+            arr[j], arr[j-1] = arr[j-1], arr[j]
             j -= 1
     return swaps
 
@@ -109,7 +109,7 @@ changes = []
 
 for i in range(test.shape[0]):
     new_change = []
-    new_change = bubblesort(list(test[i,:,0]))
+    new_change = insertionSort(list(test[i,:,0]))
     if len(new_change) > swap_nums:
         swap_nums = len(new_change)
     changes.append(new_change)

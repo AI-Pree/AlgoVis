@@ -11,8 +11,9 @@ def exch(arr, a, b):
 
 def insertionSort():
     for i in range(len(arr)):
+        key = arr[i]
         j = i
-        while (j > 0):
+        while (j > 0 and key < arr[j-1]):
             if compare(arr[j], arr[j-1]):
                 exch(arr, j, j-1)
             j -= 1
