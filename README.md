@@ -13,18 +13,6 @@ def selectionSort(arr):
              arr[i], arr[less] = arr[less], arr[i]
 ```
 
-## Insertion Sort
-![](gif/insertion.gif)
-```python
-def insertionSort(arr):
-    for i in range(len(arr)):
-        j = i
-        while (j > 0):
-            if arr[j] > arr[j-1]:
-                arr[j], arr[j-1] = arr[j-1], arr[j]
-            j -= 1
-```
-
 ## Bubble Sort
 ![](gif/bubble.gif)
 ```python
@@ -34,6 +22,19 @@ def bubblesort(arr):
         for x in range(0,N-i-1):
             if arr[x] < arr[x+1]:
                 arr[x], arr[x+1] = arr[x+1], arr[x]
+```
+
+## Insertion Sort
+![](gif/insertion.gif)
+```python
+def insertionSort(arr):
+    for i in range(len(arr)):
+        key = arr[i]
+        j = i
+        while (j > 0 and key > arr[j-1]):
+            if arr[j] > arr[j-1]:
+                arr[j], arr[j-1] = arr[j-1], arr[j]
+            j -= 1
 ```
 
 ## Shell Sort
