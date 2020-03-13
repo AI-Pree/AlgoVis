@@ -25,6 +25,17 @@ def insertionSort(arr):
             j -= 1
 ```
 
+## Bubble Sort
+![](gif/bubble.gif)
+```python
+def bubblesort(arr):
+    N = len(arr)
+    for i in range(N):
+        for x in range(0,N-i-1):
+            if arr[x] < arr[x+1]:
+                arr[x], arr[x+1] = arr[x+1], arr[x]
+```
+
 ## Shell Sort
 ![](gif/shell.gif)
 ```python
