@@ -12,6 +12,16 @@ def selectionSort(arr):
         if less != i:
              arr[i], arr[less] = arr[less], arr[i]
 ```
+## Bubble Sort
+![](gif/bubble.gif)
+```python
+def bubblesort(arr):
+    N = len(arr)
+    for i in range(N):
+        for x in range(0,N-i-1):
+            if arr[x] < arr[x+1]:
+                arr[x], arr[x+1] = arr[x+1], arr[x]
+'''
 
 ## Insertion Sort
 ![](gif/insertion.gif)
