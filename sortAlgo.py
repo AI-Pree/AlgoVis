@@ -3,6 +3,7 @@ from matplotlib import cm
 import numpy as np
 from skimage import color
 
+swaps = []
 '''
     Selection sort
 '''
@@ -66,6 +67,47 @@ def bubblesort(arr):
                 arr[x], arr[x+1] = arr[x+1], arr[x]
     return swaps
 
+'''heaps sort'''
+def heapsort( aList ):
+    global swaps
+    swaps = []
+    # convert aList to heap
+    length = len( aList ) - 1
+    leastParent = length // 2
+    for i in range ( leastParent, -1, -1 ):
+        moveDown( aList, i, length )
+
+    # flatten heap into sorted array
+    for i in range ( length, 0, -1 ):
+        if aList[0] > aList[i]:
+            swaps.append([0, i])
+            swap( aList, 0, i )
+            moveDown( aList, 0, i - 1 )
+    return aList, swaps
+
+def moveDown( aList, first, last ):
+    global swaps
+    largest = 2 * first + 1
+    while largest <= last:
+        # right child exists and is larger than left child
+        if ( largest < last ) and ( aList[largest] < aList[largest + 1] ):
+            largest += 1
+
+        # right child is larger than parent
+        if aList[largest] > aList[first]:
+            swaps.append([largest, first])
+            swap( aList, largest, first )
+            # move down to largest child
+            first = largest;
+            largest = 2 * first + 1
+        else:
+            return # force exit
+
+def swap( A, x, y ):
+    tmp = A[x]
+    A[x] = A[y]
+    A[y] = tmp
+
 '''
     Viridis color map to test the sorting algorithm
 '''
@@ -109,7 +151,7 @@ changes = []
 
 for i in range(test.shape[0]):
     new_change = []
-    new_change = insertionSort(list(test[i,:,0]))
+    new_change = heapsort(list(test[i,:,0]))
     if len(new_change) > swap_nums:
         swap_nums = len(new_change)
     changes.append(new_change)
