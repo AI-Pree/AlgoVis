@@ -2,6 +2,7 @@ from imageio import imsave
 from matplotlib import cm
 import numpy as np
 from skimage import color
+import sys
 
 swaps = []
 '''
@@ -40,7 +41,7 @@ def shellSort(arr):
     swaps = []
     #setting h interval
     h = 1
-    while(h < N/3): 
+    while(h < N/3):
         h = h * 3 + 1 #increment sequence by 3x + 1 
         print(h)
 
@@ -67,49 +68,42 @@ def bubblesort(arr):
                 arr[x], arr[x+1] = arr[x+1], arr[x]
     return swaps
 
-'''heaps sort'''
-def heapsort( aList ):
+''' Quick sort '''
+def partition(alist,low, high):
+    swaps = []
+    pivot = high
+    i = low - 1
+
+    for j in range(low, high):
+        if (alist[j] < alist[pivot]):
+            i = i + 1
+            swaps.append([alist[j], alist[high]])
+            alist[j], alist[i] = alist[i], alist[j]
+    swaps.append([alist[pivot],alist[i+1]])
+    return (i+1), swaps
+
+def quickSort(alist,low = 0, high = None):
+    
     global swaps
     swaps = []
-    # convert aList to heap
-    length = len( aList ) - 1
-    leastParent = length // 2
-    for i in range ( leastParent, -1, -1 ):
-        moveDown( aList, i, length )
+    if high is None:
+        high = len(alist) - 1
 
-    # flatten heap into sorted array
-    for i in range ( length, 0, -1 ):
-        if aList[0] > aList[i]:
-            swaps.append([0, i])
-            swap( aList, 0, i )
-            moveDown( aList, 0, i - 1 )
-    return aList, swaps
-
-def moveDown( aList, first, last ):
-    global swaps
-    largest = 2 * first + 1
-    while largest <= last:
-        # right child exists and is larger than left child
-        if ( largest < last ) and ( aList[largest] < aList[largest + 1] ):
-            largest += 1
-
-        # right child is larger than parent
-        if aList[largest] > aList[first]:
-            swaps.append([largest, first])
-            swap( aList, largest, first )
-            # move down to largest child
-            first = largest;
-            largest = 2 * first + 1
+    def quickSort(alist, low, high):
+        
+        global swaps
+        if low < high:
+            pivot, recurSwaps = partition(alist, low, high)
+            swaps += recurSwaps
+            quickSort(alist, low, pivot - 1)
+            quickSort(alist, pivot + 1, high)
         else:
-            return # force exit
-
-def swap( A, x, y ):
-    tmp = A[x]
-    A[x] = A[y]
-    A[y] = tmp
+            return
+    
+    return quickSort(alist, low, high), swaps
 
 '''
-    Viridis color map to test the sorting algorithm
+Viridis color map to test the sorting algorithm
 '''
 img = np.zeros((200, 200, 3), dtype='float16')
 viridis = cm.get_cmap("viridis", 200)
@@ -151,12 +145,13 @@ changes = []
 
 for i in range(test.shape[0]):
     new_change = []
-    new_change = heapsort(list(test[i,:,0]))
+    new_change = quickSort(list(test[i,:,0]))
     if len(new_change) > swap_nums:
         swap_nums = len(new_change)
     changes.append(new_change)
 
-
+print(test)
+print("----------------------------------------------------------------------------")
 '''
     visulization for the algorithm
 '''
@@ -167,19 +162,20 @@ def  swap_pixels(row, value):
     tmp = test[row,value[0],:].copy()
     test[row,value[0],:] = test[row,value[1],:]
     test[row,value[1],:] = tmp
-
-print(swap_nums)
 img_trans = swap_nums // 100
 img_frame = 0
 
 while curr_swaps < swap_nums:
     for i in range(test.shape[0]):
         if curr_swaps < len(changes[i]) - 1:
+            if test[i, changes[i][curr_swaps][0]]== None:
+                print("++++++++++++++++++++++++++++++++++++++++++++++++")
+                print(test[i])
+                print("++++++++++++++++++++++++++++++++++++++++++++++++")
             swap_pixels(i, changes[i][curr_swaps])
-    
+
     if  curr_swaps % img_trans == 0:
-        print(img_frame)
         imsave('%s/%05d.png'%("sort",img_frame), color.convert_colorspace(test, "hsv", "rgb"))
         img_frame += 1
-    
+
     curr_swaps += 1
