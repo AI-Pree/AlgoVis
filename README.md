@@ -57,3 +57,19 @@ def shellSort(arr):
 ```
 ## Quick Sort
 ![](gif/quick.gif)
+```python
+def partition(arr, begin, end): 
+    i = low - 1       
+    pivot = arr[end]
+    for j in range(begin, end): 
+        if   arr[j] < pivot: 
+            i = i + 1 
+            arr[i],arr[j] = arr[j],arr[i] 
+    arr[i + 1],arr[end] = arr[end],arr[i + 1] 
+    return i + 1 
+ 
+def quickSort(arr, begin, end): 
+    if begin < end:
+        sep = partition(arr,begin,end)  
+        quickSort(arr, low, sep - 1) 
+        quickSort(arr, sep + 1, end) 
