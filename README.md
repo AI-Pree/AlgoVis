@@ -55,3 +55,5 @@ def shellSort(arr):
                 j -= h
         h //= 3 #move to next increment
 ```
+## Quick Sort
+![](gif/quick.gif)
