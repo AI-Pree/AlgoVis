@@ -71,16 +71,17 @@ def bubblesort(arr):
 ''' Quick sort '''
 def partition(alist,low, high):
     swaps = []
-    pivot = high
-    i = low - 1
+    pivot = low
 
-    for j in range(low, high):
-        if (alist[j] < alist[pivot]):
-            i = i + 1
-            swaps.append([alist[j], alist[high]])
-            alist[j], alist[i] = alist[i], alist[j]
-    swaps.append([alist[pivot],alist[i+1]])
-    return (i+1), swaps
+    for j in range(low+1, high+1):
+        if (alist[j] <= alist[low]):
+            pivot += 1
+            alist[j], alist[pivot] = alist[pivot], alist[j]
+            swaps.append([j, pivot])
+    
+    alist[pivot], alist[low] = alist[low], alist[pivot]
+    swaps.append([pivot,low])
+    return pivot, swaps
 
 def quickSort(alist,low = 0, high = None):
     
@@ -88,19 +89,17 @@ def quickSort(alist,low = 0, high = None):
     swaps = []
     if high is None:
         high = len(alist) - 1
-
-    def quickSort(alist, low, high):
-        
+    def in_quickSort(alist, low, high):
         global swaps
         if low < high:
             pivot, recurSwaps = partition(alist, low, high)
             swaps += recurSwaps
-            quickSort(alist, low, pivot - 1)
-            quickSort(alist, pivot + 1, high)
+            in_quickSort(alist, low, pivot - 1)
+            in_quickSort(alist, pivot + 1, high)
         else:
             return
-    
-    return quickSort(alist, low, high), swaps
+    in_quickSort(alist, low, high)
+    return swaps
 
 '''
 Viridis color map to test the sorting algorithm
@@ -150,8 +149,6 @@ for i in range(test.shape[0]):
         swap_nums = len(new_change)
     changes.append(new_change)
 
-print(test)
-print("----------------------------------------------------------------------------")
 '''
     visulization for the algorithm
 '''
@@ -168,10 +165,6 @@ img_frame = 0
 while curr_swaps < swap_nums:
     for i in range(test.shape[0]):
         if curr_swaps < len(changes[i]) - 1:
-            if test[i, changes[i][curr_swaps][0]]== None:
-                print("++++++++++++++++++++++++++++++++++++++++++++++++")
-                print(test[i])
-                print("++++++++++++++++++++++++++++++++++++++++++++++++")
             swap_pixels(i, changes[i][curr_swaps])
 
     if  curr_swaps % img_trans == 0:
